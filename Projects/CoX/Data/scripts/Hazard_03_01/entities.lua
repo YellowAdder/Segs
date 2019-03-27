@@ -10,7 +10,8 @@ function player_connected(id)
     if spawnOnce == false then
         spinSpawners()
         spinPersists()
-        RandomSpawn(0)       --There are no SpawnDefs set up here yet
+        RandomSpawn(0)       
+	RandomSpawn(60)
         spawnOnce = true
     end
 
