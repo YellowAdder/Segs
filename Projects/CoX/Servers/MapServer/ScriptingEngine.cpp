@@ -146,6 +146,7 @@ static void registerNetFx(sol::state &lua) {
 void ScriptingEngine::registerTypes()
 {
 
+
     m_private->m_lua.new_usertype<Clue>("Clue",
         sol::constructors<Clue()>(),
         "name", sol::property(&Clue::getName, &Clue::setName),
@@ -773,6 +774,39 @@ void ScriptingEngine::registerTypes()
         return getRelayRaceResult(*cl, segment);
     };
     registerNetFx(m_private->m_lua);
+
+    m_private->m_lua["NetFxHandle"]["Create"] = [this](QString effect)
+    {
+        return createNetFx(effect);
+    };
+
+    m_private->m_lua["NetFxHandle"]["SetSourceLocation"] = [this](NetFxHandle handle, glm::vec3 location)
+    {
+        setSourceLocation(handle, location);
+    };
+
+    m_private->m_lua["NetFxHandle"]["SetTargetLocation"] = [this](NetFxHandle handle, glm::vec3 location)
+    {
+        setTargetLocation(handle, location);
+    };
+
+    m_private->m_lua["NetFxHandle"]["SetSourceEntity"] = [this](NetFxHandle handle, int ent_id, int bone_id)
+    {
+        setSourceEntityAndBone(handle, ent_id, bone_id);
+    };
+
+    m_private->m_lua["NetFxHandle"]["Lookup"] = [this](NetFxHandle handle)
+    {
+        return lookup(handle);
+    };
+
+    m_private->m_lua["NetFxHandle"]["AttachToEntity"] = [this](NetFxHandle handle, int ent_id)
+    {
+        MapInstance *mi = m_private->m_lua["map"];
+        Entity *e = getEntity(mi, ent_id);
+        attachToEntity(handle, e);
+    };
+
 }
 int ScriptingEngine::loadAndRunFile(const QString &filename)
 {

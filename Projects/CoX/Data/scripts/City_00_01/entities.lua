@@ -5,7 +5,7 @@
 function player_connected(id)
     --Id is player entity Id
     printDebug('player_connected Id: ' .. tostring(id))
-
+    curPlayerId = id
     Tasks.UpdateTasksForZone('OutBreak')
     Contacts.SpawnContacts('OutBreak')
    
@@ -35,7 +35,15 @@ entity_interact = function(id, location)
         -- Create generic NPC message script for zone?
         
     end
-  
+
+    local SomeFX = NetFxHandle.Create("FX/WORLD/CITY/STREETSTEAM01.FX")
+    NetFxHandle.SetSourceLocation(SomeFX, location)
+    NetFxHandle.Lookup(SomeFX)
+    --OTHER HELPERS:
+    --NetFxHandle.SetTargetLocation(handle, location)
+    --NetFxHandle.SetSourceEntity(handle, id, bone id)
+    --NetFxHanlde.AttachToEntity(handle, id)
+
 --[[ NPC chat message test
     MapClientSession.npcMessage(client, 'Hello Hero!', id)
     MapClientSession.npcMessage(client, 'What are you doing here?', id)
