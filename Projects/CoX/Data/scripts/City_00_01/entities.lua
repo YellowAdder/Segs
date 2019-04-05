@@ -3,8 +3,25 @@
 local spawnOnce = false
 
 entity_interact = function(id, location)
+    Contacts.SetContactDialogsWithHeroName(heroName)
 
-  return ""
+    if location ~= nil then
+        printDebug("entity id " .. tostring(id) .. " location info:  x: " .. tostring(location.x) .. " y: " .. tostring(location.y) .. " z: " .. tostring(location.z))
+    else
+        printDebug("entity id " .. tostring(id))
+    end
+    
+    if(Contacts.OpenContactDialog(id) ~= true) then
+        -- Generic NPC
+        -- Create generic NPC message script for zone?
+        
+    end
+  
+--[[ NPC chat message test
+    MapClientSession.npcMessage(client, 'Hello Hero!', id)
+    MapClientSession.npcMessage(client, 'What are you doing here?', id)
+    ]]
+    return ""
 end
 
 -- Called after MOTD for now.
@@ -18,11 +35,14 @@ function player_connected(id)
     if spawnOnce == false then
         spinSpawners()
         spinPersists()
-        --Civilians and cars don't spawn in Outbreak, though they could ...
-        --spinCivilians()
-        --spinCars()
-        RandomSpawn(65)
+        --spinCivilians()       --This should load "walking" police drones for Outbreak instead of civies.
+        --spinCars()            --Cars shouldn't appear in Outbreak, but they could.
+        RandomSpawn(75)
         spawnOnce = true
+
+        print("Initiating map auto-refresh")
+        MapInstance.SetOnTickCallback(contactsForZone.TimeCop.entityId, contactsForZone.TimeCop.onTickCallBack);
+        TimeCopMode(true, 75, 120)        
     end
 
     return  ''
@@ -62,6 +82,4 @@ revive_ok = function(id)
 
     return "ok"
 end
-
-
 

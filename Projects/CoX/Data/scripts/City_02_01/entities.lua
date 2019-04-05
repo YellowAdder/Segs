@@ -7,16 +7,22 @@ function player_connected(id)
     --Id is player entity Id
     printDebug('player_connected Id: ' .. tostring(id))
 
+    Contacts.SpawnContacts('Steel Canyon')
+
     if spawnOnce == false then
         --spinners gather location data
         spinSpawners()
         spinPersists()
         spinCivilians()
         spinCars()
-        RandomSpawn(55)
-        RandomSpawn(110, "Civilians")
-        RandomSpawn(60, "Cars")
+        RandomSpawn(40)
+        RandomSpawn(70, "Civilians")
+        RandomSpawn(40, "Cars")
         spawnOnce = true
+
+        print("Initiating map auto-refresh")
+        MapInstance.SetOnTickCallback(contactsForZone.TimeCop.entityId, contactsForZone.TimeCop.onTickCallBack);
+        TimeCopMode(true, 40, 120)  
     end
 
     return  ''
@@ -26,7 +32,7 @@ function npc_added(id)
     printDebug('npc_added Id: ' .. tostring(id))
     Contacts.SpawnedContact(id)
     -- Spawn next contact
-    Contacts.SpawnContacts('Atlas Park')
+    Contacts.SpawnContacts('Steel Canyon')
 
     return ''
 end
